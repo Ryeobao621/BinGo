@@ -61,7 +61,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .nav-back{width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:var(--accent);border-radius:50%;font-weight:300;}
 .bingo-period{flex:1;font-size:17px;font-weight:700;white-space:pre-line;text-align:center;}
 .bingo-actions{display:flex;justify-content:center;gap:10px;margin-bottom:16px;}
-.action-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:20px;border:1.5px solid var(--border);background:var(--card-bg);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text);font-family:var(--font);}
+.action-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:20px;border:1.5px solid var(--border);background:var(--card-bg);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text);font-family:var(--font);}.action-btn svg{flex-shrink:0;}.settings-fab svg{color:var(--subtext);}.prize-btn svg{flex-shrink:0;vertical-align:middle;}.celebration-emoji svg{stroke:var(--accent);}.prize-crown svg{stroke:var(--accent);}
 .action-btn.active-lock{background:var(--accent);color:white;border-color:var(--accent);}
 .action-btn.active-stamp{background:#e05a82;color:white;border-color:#e05a82;}
 [data-theme="blue"] .action-btn.active-stamp{background:#4a90d9;border-color:#4a90d9;}
@@ -71,11 +71,18 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 [data-theme="rabbit"] .action-btn.active-stamp{background:#e06090;border-color:#e06090;}
 
 .bingo-grid-wrap{margin:0 14px;background:var(--card-bg);border-radius:20px;padding:12px;border:1px solid var(--border);box-shadow:var(--shadow);}
-.bingo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;}
+.bingo-grid{display:grid;gap:7px;}
+.bingo-grid.grid-5{grid-template-columns:repeat(5,1fr);}
+.bingo-grid.grid-4{grid-template-columns:repeat(4,1fr);}
+.bingo-grid.grid-3{grid-template-columns:repeat(3,1fr);}
+.bingo-grid.grid-2{grid-template-columns:repeat(2,1fr);}
 .bingo-cell{aspect-ratio:1;background:var(--cell-bg);border:1.5px solid var(--cell-border);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s;}
 .bingo-cell:active{transform:scale(0.93);}
 .bingo-cell.has-text{flex-direction:column;padding:4px;}
 .cell-text{font-size:9px;font-weight:600;text-align:center;line-height:1.3;color:var(--text);word-break:break-all;position:relative;z-index:2;}
+.grid-4 .cell-text{font-size:10px;}
+.grid-3 .cell-text{font-size:12px;}
+.grid-2 .cell-text{font-size:15px;}
 .add-icon{font-size:22px;color:var(--cell-border);font-weight:300;}
 .stamp-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:3;}
 .stamp-overlay svg{width:72%;height:72%;}
@@ -98,7 +105,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .modal-confirm{width:100%;padding:14px;background:var(--accent);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font);}
 .modal-confirm:active{opacity:.85;}
 .settings-list{background:var(--cell-bg);border-radius:14px;overflow:hidden;border:1px solid var(--border);}
-.settings-item{display:flex;align-items:center;padding:14px 16px;cursor:pointer;border-bottom:1px solid var(--border);font-size:16px;transition:background .1s;}
+.settings-item{display:flex;align-items:center;padding:14px 16px;cursor:pointer;border-bottom:1px solid var(--border);font-size:16px;transition:background .1s;}.settings-item span:first-child svg{vertical-align:middle;margin-right:8px;display:inline-block;}
 .settings-item:last-child{border-bottom:none;}
 .settings-item:active{background:var(--border);}
 .settings-item span:first-child{flex:1;}
@@ -111,7 +118,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 [data-theme="purple"] .grand-prize-card{background:linear-gradient(135deg,#f5f0ff,#ede0ff);border-color:#c0a0f0;}
 [data-theme="cat"] .grand-prize-card{background:linear-gradient(135deg,#fdf4e8,#f8e8d0);border-color:#d09060;}
 [data-theme="rabbit"] .grand-prize-card{background:linear-gradient(135deg,#fff0f5,#ffe0ec);border-color:#f090c0;}
-.prize-crown{font-size:30px;margin-bottom:6px;display:block;}
+.prize-crown{margin-bottom:6px;display:flex;justify-content:center;color:var(--accent);}
 .grand-prize-label{font-size:12px;font-weight:800;color:#b08000;letter-spacing:2px;margin-bottom:4px;}
 [data-theme="pink"] .grand-prize-label,[data-theme="rabbit"] .grand-prize-label{color:#c06080;}
 [data-theme="blue"] .grand-prize-label{color:#4080c0;}
@@ -149,7 +156,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .celebration-overlay.show{display:flex;}
 .celebration-box{background:var(--card-bg);border-radius:24px;padding:32px 28px;text-align:center;max-width:320px;width:90%;animation:popIn .4s cubic-bezier(.32,1.3,.56,1);box-shadow:0 20px 60px rgba(0,0,0,.25);}
 @keyframes popIn{from{transform:scale(.7);opacity:0;}to{transform:scale(1);opacity:1;}}
-.celebration-emoji{font-size:56px;margin-bottom:12px;}
+.celebration-emoji{font-size:56px;margin-bottom:12px;display:flex;justify-content:center;color:var(--accent);}
 .celebration-title{font-size:22px;font-weight:800;margin-bottom:8px;}
 .celebration-prize{font-size:16px;color:var(--subtext);margin-bottom:20px;}
 .celebration-close{padding:12px 32px;background:var(--accent);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:var(--font);cursor:pointer;}
@@ -379,14 +386,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="card-btn" onclick="openBingo('seasonal')">
       <h3>季度賓果卡</h3><p id="seasonal-label">當前季度</p>
     </div>
+    <div class="card-btn" onclick="openBingo('monthly')">
+      <h3>每月賓果卡</h3><p id="monthly-label">本月</p>
+    </div>
     <div class="card-btn" onclick="openBingo('weekly')">
       <h3>每週賓果卡</h3><p id="weekly-label">本週</p>
     </div>
-    <div class="card-btn" onclick="openHistory()">
+    <div class="card-btn" onclick="openHistory()" style="grid-column:span 2;">
       <h3>歷史紀錄</h3><p>過往賓果卡</p>
     </div>
   </div>
-  <div class="settings-fab" onclick="openSettings()">⚙️</div>
+  <div class="settings-fab" onclick="openSettings()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
 </div>
 
 <!-- ══════════ BINGO SCREEN ══════════ -->
@@ -406,7 +416,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="bingo-grid" id="bingo-grid"></div>
   </div>
   <div class="bingo-footer">
-    <button class="prize-btn" onclick="openPrizePool()">🎁 設定獎品</button>
+    <button class="prize-btn" onclick="openPrizePool()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> 設定獎品</button>
     <div class="bingo-stats" id="bingo-stats"></div>
   </div>
 </div>
@@ -419,7 +429,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="nav-spacer"></div>
   </div>
   <div class="page-big-title">歷史紀錄</div>
-  <div class="page-sub">瀏覽過往年度、季度與週次賓果卡</div>
+  <div class="page-sub">瀏覽過往年度、季度、每月與週次賓果卡</div>
   <div class="history-list">
     <div class="history-item" onclick="openHistoryList('annual')">
       <div class="history-item-info"><div class="history-item-title">過往年度賓果卡</div><div class="history-item-sub">由近到遠排序</div></div>
@@ -427,6 +437,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="history-item" onclick="openHistoryList('seasonal')">
       <div class="history-item-info"><div class="history-item-title">過往季度賓果卡</div><div class="history-item-sub">由近到遠排序</div></div>
+      <div class="history-chevron">›</div>
+    </div>
+    <div class="history-item" onclick="openHistoryList('monthly')">
+      <div class="history-item-info"><div class="history-item-title">過往每月賓果卡</div><div class="history-item-sub">由近到遠排序</div></div>
       <div class="history-chevron">›</div>
     </div>
     <div class="history-item" onclick="openHistoryList('weekly')">
@@ -463,9 +477,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="modal-back" onclick="closeModal('prize-modal')">‹ 返回</div>
     <div class="modal-title">設定獎品</div>
     <div class="grand-prize-card">
-      <span class="prize-crown">👑</span>
+      <span class="prize-crown"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M5 20l2-8 5 4 5-4 2 8"/><circle cx="5" cy="10" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="10" r="1.5" fill="currentColor" stroke="none"/></svg></span>
       <div class="grand-prize-label">頭 獎</div>
-      <div class="grand-prize-title">25 個目標全部達成</div>
+      <div class="grand-prize-title" id="grand-prize-title">25 個目標全部達成</div>
       <input class="grand-prize-input" id="grand-prize-input" placeholder="輸入頭獎獎勵內容…">
     </div>
     <div style="font-size:13px;color:var(--subtext);margin-bottom:10px;font-weight:600">中獎（每連成一條線隨機抽一個，抽過不重複）</div>
@@ -482,12 +496,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="modal-title">主題設定</div>
     <div class="settings-list">
       <div class="settings-item" onclick="setTheme('default')"><span>預設</span><span class="check-icon" id="chk-default">✓</span></div>
-      <div class="settings-item" onclick="setTheme('pink')"><span>🌸 粉粉系</span><span class="check-icon" id="chk-pink" style="display:none">✓</span></div>
-      <div class="settings-item" onclick="setTheme('blue')"><span>🐟 藍藍系</span><span class="check-icon" id="chk-blue" style="display:none">✓</span></div>
-      <div class="settings-item" onclick="setTheme('purple')"><span>🎀 紫紫系</span><span class="check-icon" id="chk-purple" style="display:none">✓</span></div>
-      <div class="settings-item" onclick="setTheme('yellow')"><span>☀️ 黃黃系</span><span class="check-icon" id="chk-yellow" style="display:none">✓</span></div>
-      <div class="settings-item" onclick="setTheme('cat')"><span>🐱 貓貓系</span><span class="check-icon" id="chk-cat" style="display:none">✓</span></div>
-      <div class="settings-item" onclick="setTheme('rabbit')"><span>🐰 兔兔系</span><span class="check-icon" id="chk-rabbit" style="display:none">✓</span></div>
+      <div class="settings-item" onclick="setTheme('pink')"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#e8a0b0" opacity="0.85"/></svg> 粉粉系</span><span class="check-icon" id="chk-pink" style="display:none">✓</span></div>
+      <div class="settings-item" onclick="setTheme('blue')"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#90bce0" opacity="0.85"/></svg> 藍藍系</span><span class="check-icon" id="chk-blue" style="display:none">✓</span></div>
+      <div class="settings-item" onclick="setTheme('purple')"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#b8a0e8" opacity="0.85"/></svg> 紫紫系</span><span class="check-icon" id="chk-purple" style="display:none">✓</span></div>
+      <div class="settings-item" onclick="setTheme('yellow')"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#f0d070" opacity="0.85"/></svg> 黃黃系</span><span class="check-icon" id="chk-yellow" style="display:none">✓</span></div>
+      <div class="settings-item" onclick="setTheme('cat')"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#c89060" opacity="0.85"/></svg> 貓貓系</span><span class="check-icon" id="chk-cat" style="display:none">✓</span></div>
+      <div class="settings-item" onclick="setTheme('rabbit')"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#f0a0c0" opacity="0.85"/></svg> 兔兔系</span><span class="check-icon" id="chk-rabbit" style="display:none">✓</span></div>
     </div>
   </div>
 </div>
@@ -495,7 +509,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <!-- ══════════ CELEBRATION ══════════ -->
 <div class="celebration-overlay" id="celebration">
   <div class="celebration-box">
-    <div class="celebration-emoji" id="celeb-emoji">🎉</div>
+    <div class="celebration-emoji" id="celeb-emoji"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l7-7"/><path d="M3 21l3-10 7 7-10 3z"/><path d="M14 3l1.5 3.5L19 8l-3.5 1.5L14 13l-1.5-3.5L9 8l3.5-1.5z"/><line x1="19" y1="3" x2="21" y2="5"/><line x1="20" y1="16" x2="22" y2="18"/><line x1="3" y1="7" x2="5" y2="5"/></svg></div>
     <div class="celebration-title" id="celeb-title">賓果！連線成功！</div>
     <div class="celebration-prize" id="celeb-prize">獎品：</div>
     <button class="celebration-close" onclick="closeCelebration()">太棒了！</button>
@@ -534,8 +548,8 @@ function getWeekOfMonth(d){const m=getWeekMonday(d),f=new Date(m.getFullYear(),m
 function qLabel(q){return['1 至 3 月','4 至 6 月','7 至 9 月','10 至 12 月'][q-1];}
 function monthName(m){return['1 月','2 月','3 月','4 月','5 月','6 月','7 月','8 月','9 月','10 月','11 月','12 月'][m];}
 const NOW=new Date();
-function getPeriodKey(t){if(t==='annual')return`annual_${NOW.getFullYear()}`;if(t==='seasonal')return`seasonal_${NOW.getFullYear()}_q${Math.floor(NOW.getMonth()/3)+1}`;const m=getWeekMonday(NOW);return`weekly_${m.getFullYear()}_${m.getMonth()+1}_${m.getDate()}`;}
-function getPeriodLabel(t){if(t==='annual')return`${NOW.getFullYear()} 年 整年度`;if(t==='seasonal'){const q=Math.floor(NOW.getMonth()/3)+1;return`${NOW.getFullYear()} 年 第 ${q} 季（${qLabel(q)}）`;}const m=getWeekMonday(NOW),s=getWeekSunday(NOW),wn=getWeekOfMonth(NOW);return`${m.getFullYear()} 年 ${monthName(m.getMonth())} 第${wn}週\n（${fmt(m)} - ${fmt(s)}）`;}
+function getPeriodKey(t){if(t==='annual')return`annual_${NOW.getFullYear()}`;if(t==='seasonal')return`seasonal_${NOW.getFullYear()}_q${Math.floor(NOW.getMonth()/3)+1}`;if(t==='monthly')return`monthly_${NOW.getFullYear()}_${NOW.getMonth()+1}`;const m=getWeekMonday(NOW);return`weekly_${m.getFullYear()}_${m.getMonth()+1}_${m.getDate()}`;}
+function getPeriodLabel(t){if(t==='annual')return`${NOW.getFullYear()} 年 整年度`;if(t==='seasonal'){const q=Math.floor(NOW.getMonth()/3)+1;return`${NOW.getFullYear()} 年 第 ${q} 季（${qLabel(q)}）`;}if(t==='monthly')return`${NOW.getFullYear()} 年 ${monthName(NOW.getMonth())}`;const m=getWeekMonday(NOW),s=getWeekSunday(NOW),wn=getWeekOfMonth(NOW);return`${m.getFullYear()} 年 ${monthName(m.getMonth())} 第${wn}週\n（${fmt(m)} - ${fmt(s)}）`;}
 
 // ══ STORAGE ══
 function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
@@ -543,7 +557,24 @@ function load(k,d){const v=localStorage.getItem(k);return v?JSON.parse(v):d;}
 
 // ══ STATE ══
 let cType='annual',cKey='',cData=null,pendingIdx=-1,stampMode=false,lockMode=false;
-function loadCard(t){cType=t;cKey=getPeriodKey(t);const d={cells:Array(25).fill(null).map(()=>({text:'',stamped:false})),locked:false,prizes:{grand:'',list:Array(11).fill('')},bingos:[]};cData=load(cKey,d);if(!cData.prizes)cData.prizes=d.prizes;if(!cData.prizes.list)cData.prizes.list=d.prizes.list;if(!cData.bingos)cData.bingos=[];}
+function typeConfig(t){
+  // returns {size, prizeCount, lines}
+  if(t==='annual')  return {size:5,prizeCount:11,lines:[[0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],[0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],[0,6,12,18,24],[4,8,12,16,20]]};
+  if(t==='seasonal') return {size:4,prizeCount:10,lines:[[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15],[0,4,8,12],[1,5,9,13],[2,6,10,14],[3,7,11,15],[0,5,10,15],[3,6,9,12]]};
+  if(t==='monthly')  return {size:3,prizeCount:8, lines:[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]};
+  if(t==='weekly')   return {size:2,prizeCount:6, lines:[[0,1],[2,3],[0,2],[1,3],[0,3],[1,2]]};
+  return {size:5,prizeCount:11,lines:[]};
+}
+function loadCard(t){
+  cType=t;cKey=getPeriodKey(t);
+  const cfg=typeConfig(t);
+  const cellCount=cfg.size*cfg.size;
+  const d={cells:Array(cellCount).fill(null).map(()=>({text:'',stamped:false})),locked:false,prizes:{grand:'',list:Array(cfg.prizeCount).fill('')},bingos:[]};
+  cData=load(cKey,d);
+  if(!cData.prizes)cData.prizes=d.prizes;
+  if(!cData.prizes.list||cData.prizes.list.length!==cfg.prizeCount)cData.prizes.list=Array(cfg.prizeCount).fill('');
+  if(!cData.bingos)cData.bingos=[];
+}
 function saveCard(){save(cKey,cData);}
 
 // ══ SCREENS ══
@@ -551,18 +582,18 @@ function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classL
 function goHome(){showScreen('home');updateHomeLabels();}
 function openHistory(){showScreen('history-screen');}
 function openHistoryList(type){
-  const titles={annual:'過往年度賓果卡',seasonal:'過往季度賓果卡',weekly:'過往周次賓果卡'};
+  const titles={annual:'過往年度賓果卡',seasonal:'過往季度賓果卡',monthly:'過往每月賓果卡',weekly:'過往周次賓果卡'};
   document.getElementById('history-list-title').textContent=titles[type];
   const container=document.getElementById('history-list-items');container.innerHTML='';
-  const prefix=type==='annual'?'annual_':type==='seasonal'?'seasonal_':'weekly_',curK=getPeriodKey(type),keys=[];
+  const prefix=type==='annual'?'annual_':type==='seasonal'?'seasonal_':type==='monthly'?'monthly_':'weekly_',curK=getPeriodKey(type),keys=[];
   for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(prefix)&&k!==curK)keys.push(k);}
   keys.sort().reverse();
   if(!keys.length){container.innerHTML='<div style="padding:24px;text-align:center;color:var(--subtext);font-size:15px">尚無歷史紀錄</div>';return;}
   keys.forEach(k=>{const d=load(k,null);if(!d)return;const s=d.cells.filter(c=>c.stamped).length,lbl=keyToLabel(k,type),el=document.createElement('div');el.className='history-item';el.innerHTML=`<div class="history-item-info"><div class="history-item-title">${lbl}</div><div class="history-item-sub">已完成 ${s}/25 個目標</div></div><div class="history-chevron">›</div>`;el.onclick=()=>openHistoryCard(k,type,lbl);container.appendChild(el);});
   showScreen('history-list-screen');
 }
-function keyToLabel(k,t){if(t==='annual')return k.replace('annual_','')+' 年';if(t==='seasonal'){const p=k.replace('seasonal_','').split('_q');return`${p[0]} 年 第 ${p[1]} 季`;}const p=k.replace('weekly_','').split('_');return`${p[0]}/${p[1]}/${p[2]} 週`;}
-function openHistoryCard(k,t,lbl){cKey=k;cType=t;cData=load(k,null);if(!cData)return;renderBingo(lbl,true);showScreen('bingo-screen');}
+function keyToLabel(k,t){if(t==='annual')return k.replace('annual_','')+' 年';if(t==='seasonal'){const p=k.replace('seasonal_','').split('_q');return`${p[0]} 年 第 ${p[1]} 季`;}if(t==='monthly'){const p=k.replace('monthly_','').split('_');return`${p[0]} 年 ${monthName(parseInt(p[1])-1)}`;}const p=k.replace('weekly_','').split('_');return`${p[0]}/${p[1]}/${p[2]} 週`;}
+function openHistoryCard(k,t,lbl){cKey=k;cType=t;cData=load(k,null);if(!cData)return;if(!cData.cells||!cData.cells.length){const cfg=typeConfig(t);cData.cells=Array(cfg.size*cfg.size).fill(null).map(()=>({text:'',stamped:false}));}renderBingo(lbl,true);showScreen('bingo-screen');}
 
 // ══ BINGO ══
 function openBingo(t){loadCard(t);renderBingo(getPeriodLabel(t),false);showScreen('bingo-screen');}
@@ -570,6 +601,8 @@ function renderBingo(label,ro){
   document.getElementById('bingo-period-title').textContent=label;
   lockMode=cData.locked;stampMode=false;updateLockBtn();updateStampBtn();
   const grid=document.getElementById('bingo-grid');grid.innerHTML='';
+  const cfg=typeConfig(cType);
+  grid.className='bingo-grid grid-'+cfg.size;
   const theme=document.body.dataset.theme||'default';
   cData.cells.forEach((cell,i)=>{
     const el=document.createElement('div');
@@ -590,12 +623,18 @@ function onCell(idx,ro){
 function confirmCellInput(){const v=document.getElementById('cell-input').value.trim();if(pendingIdx<0)return;cData.cells[pendingIdx].text=v;saveCard();closeModal('cell-modal');renderBingo(document.getElementById('bingo-period-title').textContent,false);}
 function toggleLock(){cData.locked=!cData.locked;lockMode=cData.locked;if(!lockMode){stampMode=false;updateStampBtn();}saveCard();updateLockBtn();}
 function toggleStamp(){if(!lockMode)return;stampMode=!stampMode;updateStampBtn();}
-function updateLockBtn(){const b=document.getElementById('lock-btn');b.textContent=lockMode?'🔒 已鎖定':'🔓 鎖定';b.classList.toggle('active-lock',lockMode);}
-function updateStampBtn(){const b=document.getElementById('stamp-btn');b.textContent=stampMode?'🌸 蓋章中':'🌸 蓋章';b.classList.toggle('active-stamp',stampMode);}
+function updateLockBtn(){const b=document.getElementById('lock-btn');b.innerHTML=lockMode
+    ?`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> 已鎖定`
+    :`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> 鎖定`;
+  b.classList.toggle('active-lock',lockMode);}
+function updateStampBtn(){const b=document.getElementById('stamp-btn');b.innerHTML=stampMode
+    ?`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg> 蓋章中`
+    :`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg> 蓋章`;
+  b.classList.toggle('active-stamp',stampMode);}
 
 // ══ BINGO CHECK ══
-const LINES=[[0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],[0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],[0,6,12,18,24],[4,8,12,16,20]];
 function checkBingo(){
+  const cfg=typeConfig(cType),LINES=cfg.lines;
   const cells=cData.cells,prev=cData.bingos||[],nb=[];
   LINES.forEach((line,li)=>{if(line.every(i=>cells[i].stamped)&&!prev.includes(li))nb.push(li);});
   if(!nb.length)return;
@@ -607,11 +646,11 @@ function checkBingo(){
   setTimeout(()=>showCeleb(false,prize),300);
   highlightLines();updateStats();
 }
-function highlightLines(){const cells=document.querySelectorAll('.bingo-cell'),done=new Set();(cData.bingos||[]).forEach(li=>{if(li!==99&&LINES[li])LINES[li].forEach(i=>done.add(i));});cells.forEach((c,i)=>c.classList.toggle('bingo-line',done.has(i)));}
-function updateStats(){const d=cData.cells.filter(c=>c.stamped).length,l=(cData.bingos||[]).filter(n=>n!==99).length;document.getElementById('bingo-stats').textContent=`已完成 ${d}/25 個目標 · ${l} 條賓果線`;}
+function highlightLines(){const cfg=typeConfig(cType),LINES=cfg.lines;const cells=document.querySelectorAll('.bingo-cell'),done=new Set();(cData.bingos||[]).forEach(li=>{if(li!==99&&LINES[li])LINES[li].forEach(i=>done.add(i));});cells.forEach((c,i)=>c.classList.toggle('bingo-line',done.has(i)));}
+function updateStats(){const total=cData.cells.length,d=cData.cells.filter(c=>c.stamped).length,l=(cData.bingos||[]).filter(n=>n!==99).length;document.getElementById('bingo-stats').textContent=`已完成 ${d}/${total} 個目標 · ${l} 條賓果線`;}
 
 // ══ CELEBRATION ══
-function showCeleb(grand,prize){document.getElementById('celeb-emoji').textContent=grand?'🏆':'🎉';document.getElementById('celeb-title').textContent=grand?'恭喜達成頭獎！！':'賓果！連線成功！';document.getElementById('celeb-prize').textContent=`獎品：${prize}`;document.getElementById('celebration').classList.add('show');launchConfetti();if(grand)setTimeout(launchFireworks,200);}
+function showCeleb(grand,prize){document.getElementById('celeb-emoji').innerHTML=grand?`<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4"/><path d="M7 4H4a1 1 0 0 0-1 1v3a4 4 0 0 0 4 4"/><path d="M17 4h3a1 1 0 0 1 1 1v3a4 4 0 0 1-4 4"/><path d="M7 4h10v8a5 5 0 0 1-10 0V4z"/></svg>`:`<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l7-7"/><path d="M3 21l3-10 7 7-10 3z"/><path d="M14 3l1.5 3.5L19 8l-3.5 1.5L14 13l-1.5-3.5L9 8l3.5-1.5z"/><line x1="19" y1="3" x2="21" y2="5"/><line x1="20" y1="16" x2="22" y2="18"/><line x1="3" y1="7" x2="5" y2="5"/></svg>`;document.getElementById('celeb-title').textContent=grand?'恭喜達成頭獎！！':'賓果！連線成功！';document.getElementById('celeb-prize').textContent=`獎品：${prize}`;document.getElementById('celebration').classList.add('show');launchConfetti();if(grand)setTimeout(launchFireworks,200);}
 function closeCelebration(){document.getElementById('celebration').classList.remove('show');document.getElementById('confetti-container').innerHTML='';document.getElementById('firework-container').innerHTML='';}
 function launchConfetti(){const c=document.getElementById('confetti-container'),cols=['#ff6b9d','#3478f6','#9c6fff','#f0b429','#4cd964','#ff9500','#ff3b30','#5ac8fa'];for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.top='-20px';p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.animationDuration=(1+Math.random()*1.5)+'s';p.style.animationDelay=Math.random()*.8+'s';p.style.width=(8+Math.random()*8)+'px';p.style.height=(8+Math.random()*14)+'px';p.style.borderRadius=Math.random()>.5?'50%':'2px';c.appendChild(p);}setTimeout(()=>c.innerHTML='',3000);}
 function launchFireworks(){const c=document.getElementById('firework-container'),cols=['#ff6b9d','#ffd700','#00e5ff','#a855f7','#4ade80','#f97316'];for(let b=0;b<5;b++)setTimeout(()=>{const cx=20+Math.random()*60,cy=20+Math.random()*50;for(let i=0;i<20;i++){const p=document.createElement('div');p.className='firework-particle';p.style.left=cx+'vw';p.style.top=cy+'vh';p.style.background=cols[Math.floor(Math.random()*cols.length)];const a=(i/20)*Math.PI*2,dist=60+Math.random()*80;p.style.setProperty('--tx',Math.cos(a)*dist+'px');p.style.setProperty('--ty',Math.sin(a)*dist+'px');p.style.animationDelay=Math.random()*.3+'s';p.style.width=p.style.height=(4+Math.random()*6)+'px';c.appendChild(p);}},b*500);setTimeout(()=>c.innerHTML='',3500);}
@@ -619,6 +658,10 @@ function launchFireworks(){const c=document.getElementById('firework-container')
 // ══ PRIZES ══
 function openPrizePool(){
   loadCard(cType);
+  // update grand prize title dynamically
+  const totalCells=typeConfig(cType).size*typeConfig(cType).size;
+  const titleEl=document.getElementById('grand-prize-title');
+  if(titleEl) titleEl.textContent=`${totalCells} 個目標全部達成`;
   // how many prizes have been claimed (bingos excluding grand prize #99)
   const claimedCount=(cData.bingos||[]).filter(n=>n!==99).length;
   // grand prize claimed?
@@ -628,7 +671,8 @@ function openPrizePool(){
   if(grandClaimed){gInput.disabled=true;gInput.classList.add('claimed-input');}
   else{gInput.disabled=false;gInput.classList.remove('claimed-input');}
   const g=document.getElementById('mini-prizes-grid');g.innerHTML='';
-  for(let i=0;i<11;i++){
+  const prizeCount=typeConfig(cType).prizeCount;
+  for(let i=0;i<prizeCount;i++){
     const isClaimed=i<claimedCount;
     const c=document.createElement('div');
     c.className='mini-prize-card'+(isClaimed?' claimed':'');
@@ -643,7 +687,8 @@ function savePrizes(){
   if(!grandClaimed) cData.prizes.grand=document.getElementById('grand-prize-input').value.trim();
   const claimedCount=(cData.bingos||[]).filter(n=>n!==99).length;
   const newList=[];
-  for(let i=0;i<11;i++){
+  const prizeCount=typeConfig(cType).prizeCount;
+  for(let i=0;i<prizeCount;i++){
     if(i<claimedCount){
       // keep existing claimed value unchanged
       newList.push(cData.prizes.list[i]||'');
@@ -667,7 +712,7 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}));
 
 // ══ HOME LABELS ══
-function updateHomeLabels(){document.getElementById('annual-label').textContent=`${NOW.getFullYear()} 年`;const q=Math.floor(NOW.getMonth()/3)+1;document.getElementById('seasonal-label').textContent=`${NOW.getFullYear()} 年 第 ${q} 季`;const m=getWeekMonday(NOW),s=getWeekSunday(NOW);document.getElementById('weekly-label').textContent=`${fmt(m)} ～ ${fmt(s)}`;}
+function updateHomeLabels(){document.getElementById('annual-label').textContent=`${NOW.getFullYear()} 年`;const q=Math.floor(NOW.getMonth()/3)+1;document.getElementById('seasonal-label').textContent=`${NOW.getFullYear()} 年 第 ${q} 季`;document.getElementById('monthly-label').textContent=`${NOW.getFullYear()} 年 ${monthName(NOW.getMonth())}`;const m=getWeekMonday(NOW),s=getWeekSunday(NOW);document.getElementById('weekly-label').textContent=`${fmt(m)} ～ ${fmt(s)}`;}
 
 // ══ INIT ══
 (function(){setTheme(load('theme','default'));updateHomeLabels();})();
