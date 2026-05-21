@@ -715,7 +715,49 @@ document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('cli
 function updateHomeLabels(){document.getElementById('annual-label').textContent=`${NOW.getFullYear()} 年`;const q=Math.floor(NOW.getMonth()/3)+1;document.getElementById('seasonal-label').textContent=`${NOW.getFullYear()} 年 第 ${q} 季`;document.getElementById('monthly-label').textContent=`${NOW.getFullYear()} 年 ${monthName(NOW.getMonth())}`;const m=getWeekMonday(NOW),s=getWeekSunday(NOW);document.getElementById('weekly-label').textContent=`${fmt(m)} ～ ${fmt(s)}`;}
 
 // ══ INIT ══
-(function(){setTheme(load('theme','default'));updateHomeLabels();})();
+(function(){
+  // Data migration: fix any cards that were saved with wrong cell count
+  // e.g. weekly saved as 25 cells instead of 4, seasonal as 25 instead of 16
+  const typesToFix = ['seasonal','monthly','weekly'];
+  typesToFix.forEach(t => {
+    // scan all localStorage keys matching this type
+    const prefix = t === 'seasonal' ? 'seasonal_' : t === 'monthly' ? 'monthly_' : 'weekly_';
+    const cfg = typeConfig(t);
+    const correctCount = cfg.size * cfg.size;
+    for(let i = 0; i < localStorage.length; i++){
+      const k = localStorage.key(i);
+      if(!k || !k.startsWith(prefix)) continue;
+      try {
+        const d = JSON.parse(localStorage.getItem(k));
+        if(!d || !d.cells) continue;
+        if(d.cells.length !== correctCount){
+          // Trim or pad cells to correct count, preserving existing data
+          if(d.cells.length > correctCount){
+            d.cells = d.cells.slice(0, correctCount);
+          } else {
+            while(d.cells.length < correctCount){
+              d.cells.push({text:'', stamped:false});
+            }
+          }
+          // Also fix prize list count
+          const correctPrizes = cfg.prizeCount;
+          if(!d.prizes) d.prizes = {grand:'', list:[]};
+          if(!d.prizes.list) d.prizes.list = [];
+          if(d.prizes.list.length !== correctPrizes){
+            d.prizes.list = d.prizes.list.slice(0, correctPrizes);
+            while(d.prizes.list.length < correctPrizes) d.prizes.list.push('');
+          }
+          // Reset bingos since grid changed
+          d.bingos = [];
+          localStorage.setItem(k, JSON.stringify(d));
+          console.log('Migrated', k, 'from', d.cells.length, 'to', correctCount, 'cells');
+        }
+      } catch(e){ console.warn('Migration error for', k, e); }
+    }
+  });
+  setTheme(load('theme','default'));
+  updateHomeLabels();
+})();
 
 // ══ SERVICE WORKER REGISTRATION ══
 if('serviceWorker' in navigator){
