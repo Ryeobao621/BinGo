@@ -589,7 +589,7 @@ function openHistoryList(type){
   for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(prefix)&&k!==curK)keys.push(k);}
   keys.sort().reverse();
   if(!keys.length){container.innerHTML='<div style="padding:24px;text-align:center;color:var(--subtext);font-size:15px">尚無歷史紀錄</div>';return;}
-  keys.forEach(k=>{const d=load(k,null);if(!d)return;const s=d.cells.filter(c=>c.stamped).length,lbl=keyToLabel(k,type),el=document.createElement('div');el.className='history-item';el.innerHTML=`<div class="history-item-info"><div class="history-item-title">${lbl}</div><div class="history-item-sub">已完成 ${s}/25 個目標</div></div><div class="history-chevron">›</div>`;el.onclick=()=>openHistoryCard(k,type,lbl);container.appendChild(el);});
+  keys.forEach(k=>{const d=load(k,null);if(!d)return;const s=d.cells.filter(c=>c.stamped).length,lbl=keyToLabel(k,type),el=document.createElement('div');el.className='history-item';el.innerHTML=`<div class="history-item-info"><div class="history-item-title">${lbl}</div><div class="history-item-sub">已完成 ${s}/${(()=>{const c=typeConfig(type);return c.size*c.size;})()}  個目標</div></div><div class="history-chevron">›</div>`;el.onclick=()=>openHistoryCard(k,type,lbl);container.appendChild(el);});
   showScreen('history-list-screen');
 }
 function keyToLabel(k,t){if(t==='annual')return k.replace('annual_','')+' 年';if(t==='seasonal'){const p=k.replace('seasonal_','').split('_q');return`${p[0]} 年 第 ${p[1]} 季`;}if(t==='monthly'){const p=k.replace('monthly_','').split('_');return`${p[0]} 年 ${monthName(parseInt(p[1])-1)}`;}const p=k.replace('weekly_','').split('_');return`${p[0]}/${p[1]}/${p[2]} 週`;}
