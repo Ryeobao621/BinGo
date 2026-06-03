@@ -657,7 +657,7 @@ function launchFireworks(){const c=document.getElementById('firework-container')
 
 // ══ PRIZES ══
 function openPrizePool(){
-  loadCard(cType);
+  if(cKey === getPeriodKey(cType)) loadCard(cType);
   // update grand prize title dynamically
   const totalCells=typeConfig(cType).size*typeConfig(cType).size;
   const titleEl=document.getElementById('grand-prize-title');
