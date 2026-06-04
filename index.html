@@ -165,6 +165,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
 .firework-particle{position:absolute;border-radius:50%;animation:fireworkBurst 1s cubic-bezier(.17,.67,.37,.98) forwards;opacity:0;}
 @keyframes fireworkBurst{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0;}}
+  /* ── SWIPE PERIOD NAV ── */
+.swipe-indicator{display:none;justify-content:center;align-items:center;gap:6px;margin-bottom:8px;}
+.swipe-indicator.show{display:flex;}
+.swipe-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .2s,transform .2s;}
+.swipe-dot.active{background:var(--accent);transform:scale(1.3);}
+.bingo-grid-wrap{transition:transform 0s;}
+
+/* ── MEMO MODAL ── */
+.memo-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:300;display:none;align-items:flex-end;}
+.memo-overlay.open{display:flex;}
+.memo-box{width:100%;background:var(--card-bg);border-radius:24px 24px 0 0;padding:20px 20px 52px;max-height:70vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.32,1.1,.56,1);}
+.memo-header{display:flex;align-items:center;margin-bottom:16px;}
+.memo-title{font-size:18px;font-weight:800;flex:1;}
+.memo-edit-btn{padding:6px 16px;border-radius:12px;border:1.5px solid var(--accent);color:var(--accent);background:none;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);}
+.memo-save-btn{padding:6px 16px;border-radius:12px;border:none;background:var(--accent);color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);}
+.memo-content{font-size:15px;line-height:1.7;color:var(--text);white-space:pre-wrap;min-height:80px;}
+.memo-placeholder{font-size:15px;color:var(--subtext);min-height:80px;display:flex;align-items:center;justify-content:center;font-style:italic;}
+.memo-textarea{width:100%;min-height:140px;padding:12px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;font-family:var(--font);background:var(--cell-bg);color:var(--text);outline:none;resize:none;line-height:1.7;}
+.memo-textarea:focus{border-color:var(--accent);}
+.memo-close-btn{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);background:var(--cell-bg);color:var(--subtext);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-right:10px;}
+.memo-hint{font-size:12px;color:var(--subtext);text-align:center;margin-top:14px;opacity:.7;}
 </style>
 </head>
 <body data-theme="default">
@@ -407,17 +428,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="bingo-period" id="bingo-period-title"></div>
       <div style="width:34px"></div>
     </div>
+    <div class="swipe-indicator" id="swipe-indicator">
+  <div class="swipe-dot active" id="dot-current"></div>
+  <div class="swipe-dot" id="dot-next"></div>
+</div>
     <div class="bingo-actions">
       <button class="action-btn" id="lock-btn" onclick="toggleLock()">🔓 鎖定</button>
       <button class="action-btn" id="stamp-btn" onclick="toggleStamp()">🌸 蓋章</button>
     </div>
   </div>
-  <div class="bingo-grid-wrap">
+  <div class="bingo-grid-wrap" id="bingo-grid-wrap">
     <div class="bingo-grid" id="bingo-grid"></div>
   </div>
   <div class="bingo-footer">
     <button class="prize-btn" onclick="openPrizePool()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> 設定獎品</button>
     <div class="bingo-stats" id="bingo-stats"></div>
+    <div class="memo-hint" id="memo-hint" style="display:none">長按賓果卡可新增小筆記</div>
   </div>
 </div>
 
@@ -506,6 +532,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- ══════════ MEMO MODAL ══════════ -->
+<div class="memo-overlay" id="memo-modal">
+  <div class="memo-box">
+    <div class="modal-handle"></div>
+    <div class="memo-header">
+      <div class="memo-close-btn" onclick="closeMemo()">×</div>
+      <div class="memo-title">小筆記</div>
+      <button class="memo-edit-btn" id="memo-edit-btn" onclick="toggleMemoEdit()">編輯</button>
+    </div>
+    <div id="memo-view-area"></div>
+    <textarea class="memo-textarea" id="memo-textarea" placeholder="寫下你的小筆記…" style="display:none"></textarea>
+    <button class="memo-save-btn" id="memo-save-btn" onclick="saveMemo()" style="display:none;width:100%;margin-top:12px;padding:14px;">儲存</button>
+  </div>
+</div>
+  
 <!-- ══════════ CELEBRATION ══════════ -->
 <div class="celebration-overlay" id="celebration">
   <div class="celebration-box">
@@ -569,7 +610,7 @@ function loadCard(t){
   cType=t;cKey=getPeriodKey(t);
   const cfg=typeConfig(t);
   const cellCount=cfg.size*cfg.size;
-  const d={cells:Array(cellCount).fill(null).map(()=>({text:'',stamped:false})),locked:false,prizes:{grand:'',list:Array(cfg.prizeCount).fill('')},bingos:[]};
+  const d={cells:Array(cellCount).fill(null).map(()=>({text:'',stamped:false})),locked:false,prizes:{grand:'',list:Array(cfg.prizeCount).fill('')},bingos:[],memo:''};
   cData=load(cKey,d);
   if(!cData.prizes)cData.prizes=d.prizes;
   if(!cData.prizes.list||cData.prizes.list.length!==cfg.prizeCount)cData.prizes.list=Array(cfg.prizeCount).fill('');
@@ -595,8 +636,67 @@ function openHistoryList(type){
 function keyToLabel(k,t){if(t==='annual')return k.replace('annual_','')+' 年';if(t==='seasonal'){const p=k.replace('seasonal_','').split('_q');return`${p[0]} 年 第 ${p[1]} 季`;}if(t==='monthly'){const p=k.replace('monthly_','').split('_');return`${p[0]} 年 ${monthName(parseInt(p[1])-1)}`;}const p=k.replace('weekly_','').split('_');return`${p[0]}/${p[1]}/${p[2]} 週`;}
 function openHistoryCard(k,t,lbl){cKey=k;cType=t;cData=load(k,null);if(!cData)return;if(!cData.cells||!cData.cells.length){const cfg=typeConfig(t);cData.cells=Array(cfg.size*cfg.size).fill(null).map(()=>({text:'',stamped:false}));}renderBingo(lbl,true);showScreen('bingo-screen');}
 
+// ══ PERIOD NAVIGATION ══
+function getAdjacentPeriod(type,key,dir){
+  if(type==='weekly'){const p=key.replace('weekly_','').split('_');const d=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));d.setDate(d.getDate()+dir*7);const nKey=`weekly_${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}`;const sun=new Date(d);sun.setDate(d.getDate()+6);const wn=getWeekOfMonth(d);return{key:nKey,label:`${d.getFullYear()} 年 ${monthName(d.getMonth())} 第${wn}週\n（${fmt(d)} - ${fmt(sun)}）`};}
+  if(type==='monthly'){const p=key.replace('monthly_','').split('_');let y=parseInt(p[0]),m=parseInt(p[1])-1;m+=dir;if(m>11){m=0;y++;}if(m<0){m=11;y--;}return{key:`monthly_${y}_${m+1}`,label:`${y} 年 ${monthName(m)}`};}
+  if(type==='seasonal'){const p=key.replace('seasonal_','').split('_q');let y=parseInt(p[0]),q=parseInt(p[1]);q+=dir;if(q>4){q=1;y++;}if(q<1){q=4;y--;}return{key:`seasonal_${y}_q${q}`,label:`${y} 年 第 ${q} 季（${qLabel(q)}）`};}
+  return null;
+}
+function navigatePeriod(dir){
+  const currentKey=getPeriodKey(cType);
+  if(dir===1){if(cKey!==currentKey)return;const adj=getAdjacentPeriod(cType,currentKey,1);if(!adj)return;cKey=adj.key;const cfg=typeConfig(cType);const cellCount=cfg.size*cfg.size;const def={cells:Array(cellCount).fill(null).map(()=>({text:'',stamped:false})),locked:false,prizes:{grand:'',list:Array(cfg.prizeCount).fill('')},bingos:[],memo:''};cData=load(cKey,def);if(!cData.prizes)cData.prizes=def.prizes;if(!cData.prizes.list||cData.prizes.list.length!==cfg.prizeCount)cData.prizes.list=Array(cfg.prizeCount).fill('');if(!cData.bingos)cData.bingos=[];if(cData.memo===undefined)cData.memo='';renderBingo(adj.label,false);}
+  else{if(cKey===currentKey)return;loadCard(cType);renderBingo(getPeriodLabel(cType),false);}
+  updatePeriodNav();
+}
+function setupSwipeNavigation(){
+  const screen=document.getElementById('bingo-screen');
+  if(!screen||screen.dataset.swipeReady)return;
+  screen.dataset.swipeReady='1';
+  let startX=0,startY=0,startTime=0,isHoriz=null,dragging=false;
+  function getWrap(){return document.getElementById('bingo-grid-wrap');}
+  function setWrapTransform(px,animated){const w=getWrap();if(!w)return;w.style.transition=animated?'transform 0.32s cubic-bezier(.25,1,.5,1)':'none';w.style.transform=px===0?'':`translateX(${px}px)`;}
+  screen.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;startTime=Date.now();isHoriz=null;dragging=false;const w=getWrap();if(w)w.style.transition='none';},{passive:true});
+  screen.addEventListener('touchmove',e=>{
+    if(cType==='annual')return;
+    const dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;
+    if(isHoriz===null){if(Math.abs(dx)<6&&Math.abs(dy)<6)return;isHoriz=Math.abs(dx)>Math.abs(dy);}
+    if(!isHoriz)return;
+    const isCurrentPeriod=cKey===getPeriodKey(cType);
+    if(dx<0&&!isCurrentPeriod)return;
+    if(dx>0&&isCurrentPeriod)return;
+    dragging=true;
+    const maxDrag=window.innerWidth*0.55,raw=Math.abs(dx),damped=maxDrag*(1-Math.exp(-raw/(maxDrag*0.6)));
+    setWrapTransform((dx<0?-1:1)*damped,false);
+  },{passive:true});
+  screen.addEventListener('touchend',e=>{
+    if(!dragging){isHoriz=null;return;}dragging=false;
+    if(cType==='annual')return;
+    const dx=e.changedTouches[0].clientX-startX,dt=Date.now()-startTime;
+    const velocity=Math.abs(dx)/Math.max(dt,1),shouldCommit=Math.abs(dx)>window.innerWidth*0.25||velocity>0.4;
+    if(shouldCommit){
+      const dir=dx<0?1:-1,exitX=dx<0?-window.innerWidth:window.innerWidth;
+      setWrapTransform(exitX,true);
+      setTimeout(()=>{const w=getWrap();if(w){w.style.transition='none';w.style.transform=`translateX(${-exitX*0.35}px)`;}navigatePeriod(dir);requestAnimationFrame(()=>{requestAnimationFrame(()=>{setWrapTransform(0,true);});});},300);
+    } else {setWrapTransform(0,true);}
+    isHoriz=null;
+  },{passive:true});
+}
+function getNextLabel(type){if(type==='weekly')return'下週';if(type==='monthly')return'下個月';if(type==='seasonal')return'下季度';return'';}
+function updatePeriodNav(){
+  const indicator=document.getElementById('swipe-indicator'),hint=document.getElementById('memo-hint');
+  if(!indicator)return;
+  if(cType==='annual'){indicator.classList.remove('show');if(hint)hint.style.display=lockMode?'block':'none';return;}
+  indicator.classList.add('show');
+  const isCurrentPeriod=cKey===getPeriodKey(cType);
+  const dotCurrent=document.getElementById('dot-current'),dotNext=document.getElementById('dot-next');
+  if(dotCurrent)dotCurrent.classList.toggle('active',isCurrentPeriod);
+  if(dotNext)dotNext.classList.toggle('active',!isCurrentPeriod);
+  if(hint)hint.style.display=lockMode?'block':'none';
+}
+  
 // ══ BINGO ══
-function openBingo(t){loadCard(t);renderBingo(getPeriodLabel(t),false);showScreen('bingo-screen');}
+function openBingo(t){loadCard(t);renderBingo(getPeriodLabel(t),false);showScreen('bingo-screen');updatePeriodNav();setupSwipeNavigation();}
 function renderBingo(label,ro){
   document.getElementById('bingo-period-title').textContent=label;
   lockMode=cData.locked;stampMode=false;updateLockBtn();updateStampBtn();
@@ -610,18 +710,20 @@ function renderBingo(label,ro){
     if(cell.text){const s=document.createElement('span');s.className='cell-text';s.textContent=cell.text;el.appendChild(s);}
     else{const p=document.createElement('span');p.className='add-icon';p.textContent='+';el.appendChild(p);}
     if(cell.stamped){const ov=document.createElement('div');ov.className='stamp-overlay';ov.innerHTML=getStampSVG(theme);el.appendChild(ov);}
-    el.onclick=()=>onCell(i,ro);
+    el.onclick=(function(cellIdx,readOnly){return function(e){e.stopPropagation();onCell(cellIdx,readOnly);};})(i,ro);
     grid.appendChild(el);
   });
   highlightLines();updateStats();
+  setupMemoLongPress();
+  updatePeriodNav();
 }
 function onCell(idx,ro){
   if(ro)return;
   if(stampMode&&lockMode){const c=cData.cells[idx];if(!c.text)return;c.stamped=!c.stamped;saveCard();renderBingo(document.getElementById('bingo-period-title').textContent,false);checkBingo();return;}
   if(!lockMode){pendingIdx=idx;document.getElementById('cell-input').value=cData.cells[idx].text;openModal('cell-modal');}
 }
-function confirmCellInput(){const v=document.getElementById('cell-input').value.trim();if(pendingIdx<0)return;cData.cells[pendingIdx].text=v;saveCard();closeModal('cell-modal');renderBingo(document.getElementById('bingo-period-title').textContent,false);}
-function toggleLock(){cData.locked=!cData.locked;lockMode=cData.locked;if(!lockMode){stampMode=false;updateStampBtn();}saveCard();updateLockBtn();}
+function confirmCellInput(){const v=document.getElementById('cell-input').value.trim();if(pendingIdx<0||isNaN(pendingIdx)||pendingIdx>=cData.cells.length)return;cData.cells[pendingIdx].text=v;saveCard();closeModal('cell-modal');renderBingo(document.getElementById('bingo-period-title').textContent,false);}
+function toggleLock(){cData.locked=!cData.locked;lockMode=cData.locked;if(!lockMode){stampMode=false;updateStampBtn();}saveCard();updateLockBtn();const hint=document.getElementById('memo-hint');if(hint)hint.style.display=lockMode?'block':'none';}
 function toggleStamp(){if(!lockMode)return;stampMode=!stampMode;updateStampBtn();}
 function updateLockBtn(){const b=document.getElementById('lock-btn');b.innerHTML=lockMode
     ?`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> 已鎖定`
@@ -654,6 +756,33 @@ function showCeleb(grand,prize){document.getElementById('celeb-emoji').innerHTML
 function closeCelebration(){document.getElementById('celebration').classList.remove('show');document.getElementById('confetti-container').innerHTML='';document.getElementById('firework-container').innerHTML='';}
 function launchConfetti(){const c=document.getElementById('confetti-container'),cols=['#ff6b9d','#3478f6','#9c6fff','#f0b429','#4cd964','#ff9500','#ff3b30','#5ac8fa'];for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.top='-20px';p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.animationDuration=(1+Math.random()*1.5)+'s';p.style.animationDelay=Math.random()*.8+'s';p.style.width=(8+Math.random()*8)+'px';p.style.height=(8+Math.random()*14)+'px';p.style.borderRadius=Math.random()>.5?'50%':'2px';c.appendChild(p);}setTimeout(()=>c.innerHTML='',3000);}
 function launchFireworks(){const c=document.getElementById('firework-container'),cols=['#ff6b9d','#ffd700','#00e5ff','#a855f7','#4ade80','#f97316'];for(let b=0;b<5;b++)setTimeout(()=>{const cx=20+Math.random()*60,cy=20+Math.random()*50;for(let i=0;i<20;i++){const p=document.createElement('div');p.className='firework-particle';p.style.left=cx+'vw';p.style.top=cy+'vh';p.style.background=cols[Math.floor(Math.random()*cols.length)];const a=(i/20)*Math.PI*2,dist=60+Math.random()*80;p.style.setProperty('--tx',Math.cos(a)*dist+'px');p.style.setProperty('--ty',Math.sin(a)*dist+'px');p.style.animationDelay=Math.random()*.3+'s';p.style.width=p.style.height=(4+Math.random()*6)+'px';c.appendChild(p);}},b*500);setTimeout(()=>c.innerHTML='',3500);}
+
+// ══ MEMO ══
+let memoLongPressTimer=null;
+function setupMemoLongPress(){
+  const wrap=document.getElementById('bingo-grid-wrap');
+  if(!wrap||wrap.dataset.memoReady)return;
+  wrap.dataset.memoReady='1';
+  wrap.addEventListener('touchstart',()=>{if(!lockMode)return;memoLongPressTimer=setTimeout(()=>openMemo(),600);},{passive:true});
+  wrap.addEventListener('touchend',()=>clearTimeout(memoLongPressTimer));
+  wrap.addEventListener('touchmove',()=>clearTimeout(memoLongPressTimer));
+  wrap.addEventListener('mousedown',(e)=>{if(!lockMode||e.button!==0)return;memoLongPressTimer=setTimeout(()=>openMemo(),600);});
+  wrap.addEventListener('mouseup',()=>clearTimeout(memoLongPressTimer));
+  wrap.addEventListener('mousemove',()=>clearTimeout(memoLongPressTimer));
+}
+function openMemo(){if(!lockMode)return;renderMemoView();document.getElementById('memo-modal').classList.add('open');}
+function renderMemoView(){
+  const memo=cData.memo||'',viewArea=document.getElementById('memo-view-area'),textarea=document.getElementById('memo-textarea'),editBtn=document.getElementById('memo-edit-btn'),saveBtn=document.getElementById('memo-save-btn');
+  textarea.style.display='none';saveBtn.style.display='none';editBtn.style.display='block';
+  if(memo.trim()){viewArea.innerHTML=`<div class="memo-content">${memo.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;}
+  else{viewArea.innerHTML='<div class="memo-placeholder">還沒有小筆記哦</div>';}
+}
+function toggleMemoEdit(){
+  const memo=cData.memo||'',viewArea=document.getElementById('memo-view-area'),textarea=document.getElementById('memo-textarea'),editBtn=document.getElementById('memo-edit-btn'),saveBtn=document.getElementById('memo-save-btn');
+  viewArea.innerHTML='';textarea.value=memo;textarea.style.display='block';saveBtn.style.display='block';editBtn.style.display='none';textarea.focus();
+}
+function saveMemo(){cData.memo=document.getElementById('memo-textarea').value;saveCard();renderMemoView();}
+function closeMemo(){document.getElementById('memo-modal').classList.remove('open');}
 
 // ══ PRIZES ══
 function openPrizePool(){
