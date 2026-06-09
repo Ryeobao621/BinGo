@@ -11,7 +11,10 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <title>BinGo!</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"></noscript>
 <style>
 :root {
   --bg:#f5f5f7; --card-bg:#fff; --text:#1c1c1e; --subtext:#8e8e93;
@@ -27,7 +30,7 @@
 [data-theme="rabbit"]{--bg:#fff0f5;--card-bg:#fff6f9;--border:#f8d0de;--cell-bg:#ffe8f0;--cell-border:#f5bfd0;--accent:#e06090;}
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s;overflow-x:hidden;}
+html{background:#f5f5f7;}body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s;overflow-x:hidden;}
 
 /* CAT FLOATING DECO */
 .cat-paw{position:fixed;pointer-events:none;z-index:0;opacity:1;animation:catFloat 7s ease-in-out infinite;}
